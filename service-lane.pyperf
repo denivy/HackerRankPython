@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<ProfilingTarget xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <StandaloneTarget>
+    <PythonInterpreter>
+      <Id>2af0f10d-7135-4994-9156-5d01c9c11b7e</Id>
+      <Version>3.3</Version>
+    </PythonInterpreter>
+    <WorkingDirectory>C:\Program Files (x86)\Microsoft Visual Studio 12.0\Common7\IDE</WorkingDirectory>
+    <Script>C:\Users\Trey\Documents\Visual Studio 2013\Projects\HackerRank\HackerRank\HackerRank\service-lane.py</Script>
+    <Arguments />
+  </StandaloneTarget>
+  <Reports>
+    <Report>
+      <Filename>C:\Users\Trey\AppData\Local\Temp\service-lane_20140407.vsp</Filename>
+    </Report>
+    <Report>
+      <Filename>C:\Users\Trey\AppData\Local\Temp\service-lane_20140407(1).vsp</Filename>
+    </Report>
+    <Report>
+      <Filename>C:\Users\Trey\AppData\Local\Temp\service-lane_20140407(2).vsp</Filename>
+    </Report>
+    <Report>
+      <Filename>C:\Users\Trey\AppData\Local\Temp\service-lane_20140407(3).vsp</Filename>
+    </Report>
+  </Reports>
+</ProfilingTarget>
