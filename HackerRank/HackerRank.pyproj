@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>ccfaef55-745d-48a8-94da-458f77bae6a7</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>HackerRank.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>HackerRank</Name>
+    <RootNamespace>HackerRank</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Algorithms\sorting\2Arrays.py" />
+    <Compile Include="Algorithms\warmup\AngryChildren.py" />
+    <Compile Include="Algorithms\sorting\countingSort1.py" />
+    <Compile Include="Algorithms\sorting\countingSort2.py" />
+    <Compile Include="Algorithms\sorting\countingSort3.py" />
+    <Compile Include="Algorithms\sorting\countingSort4.py" />
+    <Compile Include="Algorithms\sorting\AVL_binary_search_tree.py" />
+    <Compile Include="Algorithms\searching\Flowers.py" />
+    <Compile Include="Algorithms\searching\Encryption.py" />
+    <Compile Include="Algorithms\searching\FindTheMedian.py" />
+    <Compile Include="Algorithms\searching\ClosestNumbers.py" />
+    <Compile Include="CoinOnTheTable.py" />
+    <Compile Include="HackerRank.py" />
+    <Compile Include="Algorithms\warmup\isFibonacci.py" />
+    <Compile Include="Algorithms\sorting\quicksort2.py" />
+    <Compile Include="Algorithms\sorting\insertionSort3.py" />
+    <Compile Include="Algorithms\sorting\MarksToys.py" />
+    <Compile Include="Algorithms\sorting\quickSort1.py" />
+    <Compile Include="Algorithms\warmup\service-lane.py" />
+    <Compile Include="Algorithms\sorting\quickSortFinal.py" />
+    <Compile Include="Algorithms\sorting\runningTimeQuickSort.py" />
+    <Compile Include="Algorithms\sorting\insertionSort2.py" />
+    <Compile Include="Algorithms\sorting\InsertionSortAdvancedAnalysis.py" />
+    <Compile Include="Algorithms\searching\QueensOnBoard.py" />
+    <Compile Include="Algorithms\searching\LonelyInteger.py" />
+    <Compile Include="Algorithms\searching\missingNumbers.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Algorithms\sorting\inputData.txt" />
+    <Content Include="Algorithms\sorting\insertionSort.txt" />
+    <Content Include="Algorithms\sorting\insertionSort1.txt" />
+    <Content Include="Algorithms\sorting\insertionSort2.txt" />
+    <Content Include="Algorithms\searching\queensOnBoard.txt" />
+    <Content Include="Algorithms\searching\test3.txt" />
+    <Content Include="Algorithms\searching\visualize.txt" />
+    <Content Include="coinsTest3.txt" />
+    <Content Include="coinsTest4.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Algorithms\" />
+    <Folder Include="Algorithms\searching\" />
+    <Folder Include="Algorithms\sorting\" />
+    <Folder Include="Algorithms\warmup\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+</Project>
