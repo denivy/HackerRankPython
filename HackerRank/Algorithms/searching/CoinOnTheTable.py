@@ -44,6 +44,7 @@ def tryThisBoard(coin,cols):
     if coin != None:
         newloc = cols[ coin[0] ][ coin[1] ]
     else: newloc = None
+    #print("newloc=",newloc)
     if newloc == '*':
         return True
     else:
@@ -81,8 +82,7 @@ def find_path(g, start, end):
         path.append(rpath[j])
     return path
 #############################################################################################################################
-
-def buildGraph(cols):
+def buildGraph(cols,i):
     g={}
     for r in range(len(cols)):                  #for each row
         for c in range( len(cols[r] )) :        #for each column
@@ -96,7 +96,7 @@ def buildGraph(cols):
                 if r > 0:   #if theres a path upward
                     if square == 'U':
                         distance = 1
-                    else: distance = 2
+                    else: distance = i
                     dest = (r-1,c)
                     edge = { dest:distance }
                     if g[name] == None:
@@ -106,7 +106,7 @@ def buildGraph(cols):
                 if c < len(cols[r])-1:   #if there's a path to the right
                     if square == 'R':
                         distance = 1
-                    else: distance = 2
+                    else: distance = i
                     dest=(r,c+1)
                     edge = { dest:distance }
                     if g[name] == None:
@@ -116,7 +116,7 @@ def buildGraph(cols):
                 if r < len(cols)-1:   #if theres a path down
                     if square == 'D':
                         distance = 1
-                    else : distance = 2
+                    else : distance = i
                     dest=(r+1,c)
                     edge = { dest:distance }
                     if g[name] == None:
@@ -126,7 +126,7 @@ def buildGraph(cols):
                 if c > 0: #if theres a path to the left
                     if square == 'L':
                         distance = 1
-                    else: distance = 2
+                    else: distance = i
                     dest = (r, c-1)
                     edge = { dest:distance }
                     if g[name] == None:
@@ -134,43 +134,50 @@ def buildGraph(cols):
                     else: g[name] += [edge]     #else if it does already exist, concat the new dest.
     return g
 
-#get user input
+
 cols = []
 numRows, numCols, time = [int(x) for x in input().split()]
 
 for i in range(numRows):
     cols.append(input())
-#initializations...
 
 coin = (0,0)
 star = findStar(cols)
+minMoves = calcNumMoves(coin,star,cols)
+answer=[]
 
-if calcNumMoves(coin,star,cols) <= time:    #if it can be done...
+if minMoves <= time:    #if it can be done...
     if tryThisBoard(coin,cols) == False:    #can it be done with the current board?
         # if not, build the graph
-        g=buildGraph(cols)
-        ans=0       
-        path=find_path(g,coin,star)                 #get the optimal path
-        for node in range(len(path)-1):             #for each step in our optimal path
-            x,y = path[node]                        #get the movement made
-            nextx,nexty = path[node+1]              #and the expected movement
-            movementCalledFor = cols[x][y]
-            deltax = x - nextx
-            deltay = y - nexty
-            if deltax == 0 and deltay < 0:          #if change in x is zero, and change in y is negative, we moved right (50%?)
-                movementMade = 'R'
-            elif deltay == 0 and deltax < 0:        #if change in y is zero, and change in x is negative, we moved down  (50%)
-                movementMade = 'D'
-            elif deltax == 0 and deltay > 0:        #if change in x is zero, and change in y is positive, we moved left 
-                movementMade = 'L'
-            elif deltay == 0 and deltax > 0:        #if chagne in y is zero, and change in x is positive, we moved up
-                movementMade = 'U'
+
+        for i in [2,10,100]:
+            g=buildGraph(cols,i)
+            ans=0
+            path=find_path(g,coin,star)                 	#get the optimal path
+
+            if len(path) <= time+1:                           #assuming its not too long...
+                for node in range(len(path)-1):             #for each step in our optimal path
+                    x,y = path[node]                        #get the movement made
+                    nextx,nexty = path[node+1]              #and the expected movement
+                    movementCalledFor = cols[x][y]
+                    deltax = x - nextx
+                    deltay = y - nexty
+                    if deltax == 0 and deltay < 0:          #if change in x is zero, and change in y is negative, we moved right (50%?)
+                        movementMade = 'R'
+                    elif deltay == 0 and deltax < 0:        #if change in y is zero, and change in x is negative, we moved down  (50%)
+                        movementMade = 'D'
+                    elif deltax == 0 and deltay > 0:        #if change in x is zero, and change in y is positive, we moved left 
+                        movementMade = 'L'
+                    elif deltay == 0 and deltax > 0:        #if chagne in y is zero, and change in x is positive, we moved up
+                        movementMade = 'U'
             
-            else:raise Exception                    #otherwise, something funky happened, so exit with an error
+                    else:raise Exception                    #otherwise, something funky happened, so exit with an error
             
-            if movementMade != movementCalledFor:   #and compare them...if there's been a change...
-                ans += 1
-        print (ans)
+                    if movementMade != movementCalledFor:   #and compare them...if there's been a change...
+                        ans += 1
+                #print (ans)
+                answer.append(ans)
+        print(min(answer))
     else:                                           #if tryThisBoard() is TRUE
         print("0")                                  #nothing needs to be done
 else: print ("-1")                                  #if its impossible to solve this puzzle in the given time...
