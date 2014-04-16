@@ -59,8 +59,9 @@
     <Content Include="Algorithms\searching\queensOnBoard.txt" />
     <Content Include="Algorithms\searching\test3.txt" />
     <Content Include="Algorithms\searching\visualize.txt" />
+    <Content Include="coinsTest2.txt" />
     <Content Include="coinsTest3.txt" />
-    <Content Include="coinsTest4.txt" />
+    <Content Include="coinTest10.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Algorithms\" />
