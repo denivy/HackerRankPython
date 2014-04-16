@@ -34,6 +34,7 @@
     <Compile Include="Algorithms\searching\FindTheMedian.py" />
     <Compile Include="Algorithms\searching\ClosestNumbers.py" />
     <Compile Include="CoinOnTheTable.py" />
+    <Compile Include="graph.py" />
     <Compile Include="HackerRank.py" />
     <Compile Include="Algorithms\warmup\isFibonacci.py" />
     <Compile Include="Algorithms\sorting\quicksort2.py" />
@@ -48,6 +49,7 @@
     <Compile Include="Algorithms\searching\QueensOnBoard.py" />
     <Compile Include="Algorithms\searching\LonelyInteger.py" />
     <Compile Include="Algorithms\searching\missingNumbers.py" />
+    <Compile Include="ps11.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Algorithms\sorting\inputData.txt" />

@@ -6,129 +6,6 @@ with open("coinsTest4.txt","r") as f:
         cols.append(f.readline().strip())
 for row in cols:
     print(row)
-#expects output ...
-#coinsTest3.txt = 3
-#coinsTest4.txt = 8
-
-##############################################################################################################################
-#   object definitions
-##############################################################################################################################
-
-class Node(object):                                                                     #creates a node
-   def __init__(self, name, value=None):                                                #initializer
-       self.name = str(name)
-       self.value = str(value)
-   def getName(self):                                                                   #name getter
-       return self.name
-   def __str__(self):                                                                   #string version
-       return self.name
-   def __repr__(self):                                                                  #required for type
-      return self.name
-   def __eq__(self, other):                                                             #used for comparison
-      return self.name == other.name                                    
-   def __ne__(self, other):
-      return not self.__eq__(other)                                                     
-
-#############################################################################################################################
-
-class Edge(object):                                                                     #creates an edge
-   def __init__(self, src, dest):                                                       #initializer
-       self.src = src
-       self.dest = dest
-   def getSource(self):                                                                 #source getter
-       return self.src
-   def getDestination(self):                                                            #destination getter
-       return self.dest
-   def __str__(self):                                                                   #pretty string
-       return str(self.src) + '->' + str(self.dest)
-
-#############################################################################################################################
-
-class WEdge(Edge):                                                                      #create a weighted edge object (extends Edge)
-    def __init__(self, src, dest, distance):
-        
-        self.src  = src                                                                 #initialize instance variables
-        self.dest = dest
-        self.distance = int(distance)
-        #self.direction  = direction
-
-    def getSource(self):                                                                #source getter
-        return self.src
-    def getDestination(self):                                                           #destination getter
-        return self.dest    
-    def getDistance(self):                                                              #total distance getter
-        return int(self.distance)
-    #def getOutdoorDistance(self):                                                       #outdoor distance getter
-     #   return int(self.outdoor)
-    def __str__(self):                                                                  #create a pretty string to return
-        return str(self.src.getName().rjust(6) ) + \
-                   ' --' + str(self.distance).ljust(3) + '--> ' + \
-                   str(self.dest.getName().ljust(6) )
-                
-#############################################################################################################################
-
-class Digraph(object):
-
-   def __init__(self):                                                                  #initialize the graph
-       self.nodes = []
-       self.edges = {}
-   def addNode(self, node):                                                             #add a node to the graph
-       
-       if node in self.nodes:                                                           #if it already exists.
-           #print("Duplicate Node!")
-           raise ValueError('Duplicate node')                                           #raise an error
-       else:
-           if type(node) != Node:                                                       #if its not the right type
-                raise TypeError                                                         #raise an error
-           self.nodes.append(node)                                                      #add it to the graph
-           self.edges[str(node)] = []                                                   #create an empty list container to hold the nodes future edges
-
-   def addEdge(self, edge):                                                             #add an edge to the graph
-       src = edge.getSource()                                                           #find the source
-       dest = edge.getDestination()                                                     #and the destination of the supplied edge
-       if not(src in self.nodes and dest in self.nodes):                                #check to make sure they exist
-           #print ("Node not in graph!")                                                #and if not throw an exception
-           raise ValueError('Node not in graph')                                        
-       self.edges[str(src)].append(edge)                                                #if they do exist, add them to the graph
-
-   def childrenOf(self, node):                                                          #returns a list of children
-       return self.edges[ str(node) ]                                                   #for the current node (returns a list of WEdge objects)
-
-   def hasNode(self, node):                                                             #if this node exists in the graph
-       if node in self.nodes:                                                           #find it
-           return True                                                                  #and return either true
-       else: return False                                                               #or false accordingly
-   
-   def updateValue(self,node,value):                                                    #sets the value of a node
-       if node in self.nodes:
-            self.nodes[self.nodes.index(node)].value = value
-       else: raise Exception
-
-   def getValue(self,node):                                                             #gets the value of a node
-       if node in self.nodes:
-           return self.nodes[self.nodes.index(node)].value
-       else: raise Exception
-
-   def calcPathLength(self, path, toPrint=False):                                       #calculates a numeric value of a path in format ['1','3','5']
-        distances=[]                                                                    #locals
-        for i in range (0,len(path)-1):                                                 #for each leg of the journey
-            d = self.distanceFromParentToChild(Node(path[i]),Node(path[i+1]))           #get the distance between each node
-            distances.append(d)                                                         #and put them in an array
-        if toPrint==True:                                                               #if i want to display some debug info
-            print ( str(sum(distances)).rjust(3) )
-        return ( sum(distances) )                                                       #return the sum
-
-   def distanceFromParentToChild(self, src, dest):                                      #get the distance from one node to another node
-        for edge in self.edges[str(src)]:                                                  #check all possible pathways initiating from the source node
-            if edge.getDestination() == dest:                                              #if it exists
-                return (edge.getDistance())                                                #return a tuple containing the total and outdoor distances
-        
-   def __str__(self):                                                                   #convert this graph to a useful string
-       res = ''                                                                         #empty str t return
-       for k in sorted(self.edges):                                                     #for all the nodes
-           for d in self.edges[k]:                                                      #for each edge
-               res = res + str(d) + '\n'                                                #create a pretty string :P
-       return res[:-1]                                                                  
 
 #############################################################################################################################
 #   declare helper functions
@@ -195,122 +72,153 @@ def tryThisBoard(coin,cols):
         return False
 
 #############################################################################################################################
-
-def addThis(dest,g,srcNode,distance,square):
-    destNode = Node(dest,square) #create a node
-    if g.hasNode(destNode) == False: # if it doesn't already exist
-        g.addNode(destNode) #add it
-    wEdge = WEdge(srcNode,destNode,distance) #create a wedge
-    g.addEdge(wEdge)
-
+def calcPath(g,nodes):
+    distance=0
+    for i in range(len(nodes)-1): #for each node...find the distance...(OR MAYBE FOR all but the LAST entry)
+        #print("i=",i,"nodes[i]=",nodes[i])
+        src = nodes[i]
+        dest = nodes[i+1]
+        #print("src=",src,"dest=",dest)
+        #print("g[src]=",g[src])
+        for x in g[src]: 
+            #print("x=",x,"list(x)[0]=", list(x)[0])
+            if list(x)[0] == dest:
+                distance += x[ list(x)[0] ]
+        #print("distance=",distance)     
+    return distance
 #############################################################################################################################
-#   this is the workhorse function that does all the calculation...
-#############################################################################################################################
-
-def directedDFS(digraph, start, end, visited = None, memo = None, counter=0): #max total distance not really used for this application
-    print ("start=",start,"end=",end)
+def find_path(g, start, end, time, visited = None, memo = None):
     if visited == None : visited = []                                                   #initialize visited on our first trip thru
     if memo == None : memo = {}                                                         #initialize the memo
-    start = Node(start)                                                                 #create nodes for the given values
-    end = Node(end)
-    if not (digraph.hasNode(start) and digraph.hasNode(end)):                           #and confirm that these nodes exist int he graph
-        raise ValueError("Start or End does not exist")
-    path = [str(start)]                                                                 #this is only EVER 1 node long???
+    #try:
+    #    g[start]
+    #    g[end]
+    #except:
+    #    raise ValueError("Start or End does not exist")
+    #input()
+    path = [start]                                                                 #this is only EVER 1 node long???
     if start == end : 
-        print("FOUND A WAY THRU?,counter=",counter)
-        return path                                                                     #if we found it, start backtracking
+        print("Found the End!")
+        return path                                                       #if we found it, start backtracking
     shortest = None                                                                     #initialize the shortest path
     bestDist = None                                                                     #initialize the best path val
   
-    for node in digraph.childrenOf(start):                                              #for each child of the current node
-        destination = node.getDestination()                                             #find out the destination
-        if ( str(destination) not in visited ):                                         #check to see if we've been there before
-            visited = visited + [str(destination)]                                      #if not, we plan to visit it now, so update the list
+    for node in g[start]:                                                               #for each node
+        destination = list(node)[0]
+        distance = node[destination]
+        #print ("node=",node,"start=",start,"destination=",destination,"distance=",distance,"visited=",visited,"memo=",memo )
+        if destination not in visited:                                         #check to see if we've been there before
+            visited = visited + [destination]                                      #if not, we plan to visit it now, so update the list
             try:
-                newPath = memo[str(destination),str(end)]
-                print("Saved some time!")
+                #print("trying memo")
+                newPath = memo[destination,end]
+                print("saved time?")
             except:
-                newPath = directedDFS (digraph,                                         #call the function with the same graph
+                newPath = find_path(   g,                                         #call the function with the same graph
                                        destination,                                     #using the current child node
                                        end,                                             #the same end
+                                       time,
                                        visited,                                         #and the recently updated copy of the visited list
-                                       memo,                                            #and the potentially new copy of memo.
-                                       counter=counter+1)                               #and the incremented counter
+                                       memo   )                               
 
             if newPath == None :                                                        #when we cant find a way thru, newPath will be none so...
                 continue                                                                #try the next child by breaking out of the loop
-                                                                                        #otherwise if we have SOME value for newPath, then we found a way thru
-            potentialDist = digraph.calcPathLength(path + newPath)                      #if we did find a way thru  find the length
-            #if potentialDist > maxTotalDist:                                            #check to see if it would be too long
-            #    visited.remove(str(destination))                                        #if so we have to backtrack a little
+            print("path + newPath=",path + newPath)                                                                            #otherwise if we have SOME value for newPath, then we found a way thru
+            #input()
+            #potentialDist = calcPath(g, path + newPath)                                  #if we did find a way thru  
+            #if potentialDist >= time:                                            #check to see if it would be too long
+            #    visited.remove(destination)                                        #if so we have to backtrack a little
             #    try:                                                                    #and remove any references to this node if they exist
-            #        del(memo[str(destination),str(end)])                                #in our visited and memo collections
+            #        del(memo[destination,end])                                #in our visited and memo collections
             #    except:                                                                 #we use a try in case the item doesn't actually exist in memo
             #        pass                                                                #if it doesn't exist, no harm done, just do nothing
             #    continue                                                                #break out of the loop and try the next child
 
-            currentDist = digraph.calcPathLength(newPath)                               #if we made it thru 
-            if  bestDist == None or currentDist < bestDist:                              #check to see if its our first time to get this far on this level, 
+            #currentDist = calcPath(g, newPath)                               #if we made it thru AND it wasn't too big
+            if  shortest == None or newPath < shortest:                              #check to see if its our first time to get this far on this level, 
+                #if bestDist != None: print("Okay found a smaller case")
+                #else: print("well...i found something")
                 shortest = newPath                                                      #OR if our currentPath is shorter than the best path found so far 
-                bestDist = currentDist                                                  #and if so, set shortest = newPath to signify that we found an initial way thru OR a shorter way thru
-                memo[str(destination), str(end)] = shortest                             #and set the best Distance to the current Distance
+                #bestDist = potentialDist                                                  #and if so, set shortest = newPath to signify that we found an initial way thru OR a shorter way thru
+                print("start=",start,"destination=",destination)
+                memo[start,destination] = path + newPath                             #and set the best Distance to the current Distance
                 print("memo=",memo)
                                                                                         #and update memo for dynamic programming application(speed)
                                                                                         #memo should be set to the string representation of the path we found...                
     if shortest != None:                                                                #when we've made it thru all the children,check to make sure we found something
         return path + shortest                                                          #and if so, add the current node shortest path to the existing path and return it
     else :                                                                              #if we didn't find a way thru for this level,
-        if counter==0:                                                                  #if we didn't make it thru in TIME, we need to modify this graph somehow...
-            raise ValueError                                                            #check to see if we never found a solution otherise return none 
-            return None
+        return None
 
+#############################################################################################################################
+#   this is the workhorse function that does all the calculation...
 #############################################################################################################################
 
 def buildGraph(cols):
-    g=Digraph()
-
-    for r in range(len(cols)):
-            for c in range( len(cols[r] )) :
-                square=cols[r][c]
-                src = (r,c)
-                srcNode = Node(src, square)
-                if g.hasNode( srcNode ) == False:
-                    g.addNode( srcNode )
-                #else: 
-                #    g.updateValue(srcNode,square)
-
-                if square == '*':
-                    #return g
-                    pass
-                else:
-                    if r > 0:   #if theres a path upward
-                        if square == 'U':
-                            distance = 1
-                        else: distance = 10
-                        dest=(r-1,c)
-                        addThis(dest,g,srcNode,distance,square)
+    g={}
+    for r in range(len(cols)):                  #for each row
+        for c in range( len(cols[r] )) :        #for each column
+            square=cols[r][c]                   #
+            #print ("r=",r,"c=",c,"square=",square)
+            name = (r,c)
+            g[name] = None
+            if square == '*':
+                g[name] = []
+                pass
+            else:
+                if r > 0:   #if theres a path upward
+                    if square == 'U':
+                        distance = 0
+                    else: distance = 1
+                    dest = (r-1,c)
+                    edge = { dest:distance }
+                    #if the destination node does not already exist, add it,
+                    if g[name] == None:
+                        g[name] = [edge]
+                    else: g[name] += [edge]     #else if it does already exist, concat the new dest.
                                 
-                    if c < len(cols[r])-1:   #if there's a path to the right
-                        #print("c=",c)
-                        if square == 'R':
-                            distance = 1
-                        else: distance = 10
-                        dest=(r,c+1)
-                        addThis(dest,g,srcNode,distance,square)
+                if c < len(cols[r])-1:   #if there's a path to the right
+                    #print("c=",c)
+                    if square == 'R':
+                        distance = 0
+                    else: distance = 1
+                    dest=(r,c+1)
+                    edge = { dest:distance }
+                    #if the destination node does not already exist, add it,
+                    if g[name] == None:
+                        g[name] = [edge]
+                    else: g[name] += [edge]     #else if it does already exist, concat the new dest.
             
-                    if r < len(cols)-1:   #if theres a path down
-                        if square == 'D':
-                            distance = 1
-                        else : distance = 10
-                        dest=(r+1,c)
-                        addThis(dest,g,srcNode,distance,square)
+                if r < len(cols)-1:   #if theres a path down
+                    if square == 'D':
+                        distance = 0
+                    else : distance = 1
+                    dest=(r+1,c)
+                    edge = { dest:distance }
+                    #if the destination node does not already exist, add it,
+                    if g[name] == None:
+                        g[name] = [edge]
+                    else: g[name] += [edge]     #else if it does already exist, concat the new dest.
                 
-                    if c > 0: #if theres a path to the left
-                        if square == 'L':
-                            distance = 1
-                        else: distance = 10
-                        dest = (r, c-1)
-                        addThis(dest,g,srcNode,distance,square)
+                if c > 0: #if theres a path to the left
+                    if square == 'L':
+                        distance = 0
+                    else: distance = 1
+                    dest = (r, c-1)
+                    edge = { dest:distance }
+                    #if the destination node does not already exist, add it,
+                    if g[name] == None:
+                        g[name] = [edge]
+                    else: g[name] += [edge]     #else if it does already exist, concat the new dest.
+
+    #print("g=")
+    #for i in g: 
+    #    print(i, "=")
+    #    if g[i] == None: print("********************")
+    #    else:
+    #        for x in g[i]:
+    #            print ("  x=",x)            
+    #input()
     return g
 
 #get user input
@@ -328,22 +236,23 @@ if calcNumMoves(coin,star,cols) <= time:    #if it can be done...
     if tryThisBoard(coin,cols) == False:    #can it be done with the current board?
         # if not, build the graph
         print ("numMoves=",calcNumMoves(coin,star,cols), "time=",time)
-        print("building graph")
+        print ("numRows=",numRows,"numCols=",numCols,"numRows*numCols=",numRows*numCols)
         print("star=",star)
-        truncated = [ cols[x][ :star[1]+1 ] for x in range(star[0]+1) ]
-
-        for i in truncated:
-            print (i)
+        print("building graph")
         g=buildGraph(cols)
+        print("len(g)=",len(g))
+        numEdges = 0
+        for node in g:
+            if g[node] != None:
+                numEdges += len(g[node])
+        print("numEdges=",numEdges)
         ans=0       
-
-        print ("graphSize=",len(g.nodes))
-        #print ("graph=")
-        #print (g)
-        
-        path=directedDFS(g,coin,star)               #get the optimal path
+        print("k...lets try and find the path")
+                
+        path=find_path(g,coin,star,time)               #get the optimal path
 
         print ("path=",path)
+        input()
 
         for node in range(len(path)-1):             #for each step in our optimal path
             x,y = eval(path[node])                  #get the movement made
