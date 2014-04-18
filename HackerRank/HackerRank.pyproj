@@ -5,7 +5,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>ccfaef55-745d-48a8-94da-458f77bae6a7</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>Algorithms\searching\CoinOnTheTable.py</StartupFile>
+    <StartupFile>HackerRank.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -34,7 +34,6 @@
     <Compile Include="Algorithms\searching\FindTheMedian.py" />
     <Compile Include="Algorithms\searching\ClosestNumbers.py" />
     <Compile Include="Algorithms\searching\CoinOnTheTable.py" />
-    <Compile Include="HackerRank.py" />
     <Compile Include="Algorithms\warmup\isFibonacci.py" />
     <Compile Include="Algorithms\sorting\quicksort2.py" />
     <Compile Include="Algorithms\sorting\insertionSort3.py" />
@@ -48,6 +47,8 @@
     <Compile Include="Algorithms\searching\QueensOnBoard.py" />
     <Compile Include="Algorithms\searching\LonelyInteger.py" />
     <Compile Include="Algorithms\searching\missingNumbers.py" />
+    <Compile Include="HackerRank.py" />
+    <Compile Include="Algorithms\searching\Pairs.py" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Algorithms\sorting\inputData.txt" />
@@ -62,6 +63,14 @@
     <Content Include="Algorithms\searching\coinsTest3.txt" />
     <Content Include="Algorithms\searching\coinsTest10.txt" />
     <Content Include="Algorithms\searching\coinsTest1.txt" />
+    <Content Include="median-0.txt" />
+    <Content Include="Algorithms\searching\pairs0.txt" />
+    <Content Include="Algorithms\searching\pairs1.txt" />
+    <Content Include="Algorithms\searching\pairs2.txt" />
+    <Content Include="median-0result.txt" />
+    <Content Include="median-1.txt" />
+    <Content Include="median-1result.txt" />
+    <Content Include="median-out.txt" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Algorithms\" />
